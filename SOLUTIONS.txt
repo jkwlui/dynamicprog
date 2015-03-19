@@ -1,0 +1,48 @@
+1. Base cases:
+""
+""
+Sum of squares of slack space: 0
+
+"The cat in the hat."
+"The cat in the hat."
+
+Sum of squares of slack space:
+
+Small cases:
+"This little piggy went to market.
+This little piggy stayed home.
+This little piggy had roast beef.
+This little piggy had none.
+And this little piggy cried wee wee wee all the way home."
+
+Sum of squares of slack space:
+
+"This little piggy went to market.
+This little piggy stayed home. This
+little piggy had roast beef. This
+little piggy had none. And this little
+piggy cried wee wee wee all the way home."
+
+Sum of squares of slack space:
+
+Substantial case:
+"Call me Ishmael.
+Some years ago,
+never mind how long precisely,
+having little or no money in my purse,
+and nothing particular to interest me on shore,
+I thought I would sail about a little
+and see the watery part of the world."
+
+Sum of squares of slack space:
+
+"Call me Ishmael.Some years ago, never
+mind how long precisely,having little
+or no money in my purse,and nothing
+particular to interest me on shore,I
+thought I would sail about a little
+and see the watery part of the world."
+
+Sum of squares of slack space:
+
+2.
