@@ -36,13 +36,44 @@ and see the watery part of the world."
 
 Sum of squares of slack space:
 
-"Call me Ishmael.Some years ago, never
-mind how long precisely,having little
-or no money in my purse,and nothing
-particular to interest me on shore,I
+"Call me Ishmael. Some years ago, never
+mind how long precisely, having little
+or no money in my purse, and nothing
+particular to interest me on shore, I
 thought I would sail about a little
 and see the watery part of the world."
 
 Sum of squares of slack space:
 
-2.
+2. Mathematical recurrence for cost of sum of
+squared slacks in optimal solution:
+b = line break
+
+Cost = (n-1) Σ (i=1) [sum(bi, bi+1 - 1)^2]
+
+3. Memoized version should be in linear time
+
+4. Java
+
+5. L = max(line.length);
+
+FindMinSlack(Text){
+
+SquaresOfSlacksOfAllLines = []
+
+  for every word in Text {
+    if sum(characters in word + 1) <= L {
+      LeftHandSide =
+      RightHandSide =
+      slack= LeftHandSide - RightHandSide
+      }
+    min(sum of squares of slacks of all lines)
+    }
+
+6.
+
+7.
+
+8.
+
+9.
