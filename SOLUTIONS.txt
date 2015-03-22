@@ -65,7 +65,7 @@ from OPT(0), OPT(1), .. , OPT(n)
 
 
 
-3. Memoized version runtime: Θ(n^2)
+3. Memoized version runtime: Θ(n^2); memory use: Θ(n)
 
 By storing OPT(0), OPT(1), .. , OPT(n), we just need to computer each OPT(k) once,
 so there are n iterations of computing the optimum sub-solutions.
@@ -74,6 +74,8 @@ Each OPT(k) will need to compute S^2(i,k) from i=0 to k, assuming it takes O(1) 
 to compute each, it would take Θ(n) time. Finding the minimum of these values are
 just O(n) time (could do better - using BST, but previous computation dominates), thus
 the total time would be Θ(n^2) time.
+
+We will need to store OPT(0), .. , OPT(n), so the memory use is Θ(n).
 
 
 4. Java
