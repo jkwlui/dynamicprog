@@ -47,9 +47,23 @@ Sum of squares of slack space:
 
 2. Mathematical recurrence for cost of sum of
 squared slacks in optimal solution:
-b = line break
 
-Cost = (n-1) Σ (i=1) [sum(bi, bi+1 - 1)^2]
+Define OPT(k) to be the optimum solution (minimize slack spaces for all lines) for
+lines containing words w(1) up to w(k).
+
+Define S(i,k) to be the slack space(s) of a line that contains the words w(i) up to w(k).
+Define S(i,k) := infinity if such line exceeds the maximum number of words allowed for a line.
+
+Then OPT(k) = min_(i<=i<=k) [(S^2(i,k)) + OPT(k-1)]
+Define OPT(0) = 0    // optimal solution for the set of 0 words is 0. (no slack space for no words)
+
+That is, find the minimum squared cost (slack space) by iteratively fitting more words into
+a line and finding the optimal solution of the remaining words.
+
+Therefore, the optimal solution of w(1)..w(n) is computed by finding OPT(n) - building up
+from OPT(0), OPT(1), .. , OPT(n)
+
+
 
 3. Memoized version should be in linear time
 
