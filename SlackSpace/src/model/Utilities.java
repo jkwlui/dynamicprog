@@ -29,7 +29,7 @@ public class Utilities {
 			BufferedReader bufferedReader = new BufferedReader(fileReader);
 			String line = null;
 			while ((line = bufferedReader.readLine()) != null) {
-				lines.add(line);
+				lines.add(line.trim());
 			}
 			bufferedReader.close();
 			
