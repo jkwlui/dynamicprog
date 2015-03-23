@@ -215,90 +215,98 @@ We will need to store OPT(0), .. , OPT(n), so the memory use is Θ(n).
 		}
 	}
 
-8. public static void ToText(String[] args, Integer[][] solution3) {
+8. class DynamicProgramming {
 
-		int numWords = args.length;
-		int[] Cost = new int[args.length+1];
+	// For array index i, it holds the optimal solution as computed
+		// up to i words. Base case: optimalSlackSpace[0] = 0 where
+		// 0 words are included
 
-		int breaks[] = new int[args.length];
+		public static Integer[][] optimalSlackSpace;
 
-		Cost[0] = 0;
-		for (int i = 0; i < numWords; i++) {
-			Cost[i+1] = Integer.MAX_VALUE; //infinity
-			int k = i;
+		public static Integer[][] minSlackSpaceDP(String[] words, int maxCharInLine) {
+			// initialize array of optimal solution to the size of words
+			// use Integer object instead of primitive int because
+			// it allows for "null" values
 
-			/*
-			 * cost of arranging k words in the text +
-			 * slack of words from kth word to ith word on a single line
-			 */
-			int T = Cost[k] + solution3[k][i];
-
-			if (T < Cost[i+1]) {
-				//if cost of arranging k words in the text +
-				//slack of words from kth word to ith word on a single line
-				//smaller than previous costs
-
-				Cost[i+1] = T;
-				breaks[i] = k;
-			}
-			while (k >= 1 && T < Integer.MAX_VALUE) {
-				//find min k such that cost of arranging k words +
-				//slack from kth word to ith word decreases
-				k--;
-				T = Cost[k] + solution3[k][i];
-				if (T < Cost[i+1]) {
-					Cost[i+1] = T;
-					breaks[i] = k;
+			// initialize array indices [] [] with number of words
+			optimalSlackSpace = new Integer[words.length][words.length];
+			for (int i = 0; i < words.length; i++) {
+				for (int j = 0; j < words.length; j ++) {
+					optimalSlackSpace[i][j] = -1; //will equal infinity
 				}
 			}
-		}
+			// base case
+			optimalSlackSpace[0][0] = words[0].length();
 
-		//determine the first word on each line
+			int[] lastWord = new int[words.length];
+			lastWord[0] = words.length - 1;
 
-		//initilize list of indices of first word on each line
-		Vector<Integer> firstWordInd = new Vector<Integer>();
-		//add first word index of last line if all words used
-		firstWordInd.add(0, breaks[numWords- 1]);
-		int i = breaks[numWords- 1] - 1;
-		while (i >= 0) {
-			//backtrack to find first word on lines
-			firstWordInd.add(0, breaks[i]);
-			i = breaks[i] - 1;
-		}
-
-		int prevInd = 0;
-		for (int firstInd : firstWordInd) {
-			//firstInd = firstWordInd.elementAt(i);
-			//print words from prevInd to firstind -1 in a single line
-			for (int j = prevInd; j < firstInd; j++) {
-				System.out.print(args[j]);
-				System.out.print(' ');
+			//first row of table
+			for (int i = 1; i < words.length; i++) {
+				optimalSlackSpace[0][i] = optimalSlackSpace[0][i-1] + words[i].length();
 			}
-			System.out.println();
-			prevInd = firstInd;
+
+			//remaining rows
+			for (int i = 1; i < words.length; i++) {
+				int k = i;
+				optimalSlackSpace[i][k] = optimalSlackSpace[1][k] - optimalSlackSpace[1][i-1];
+				//while you can add more words to a line
+				while (k <= words.length - 2 &&
+						(maxCharInLine - optimalSlackSpace[i][k] - (k - i)) > 0) {
+					k++;
+					optimalSlackSpace[i][k] = optimalSlackSpace[0][k] - optimalSlackSpace[0][i-1];
+				}
+				lastWord[i] = k;
+			}
+
+			//Finding the sum of squares for valid entries in table
+			for (int i = 0; i < words.length; i++) {
+				for (int j = i; j <= lastWord[i]; j++) {
+					optimalSlackSpace[i][j] = maxCharInLine - optimalSlackSpace[i][j] - (j-i);
+					if (optimalSlackSpace[i][j] < 0) {
+						optimalSlackSpace[i][j] = 1000000; //Infinity
+					} else {
+						optimalSlackSpace[i][j] = optimalSlackSpace[i][j] * optimalSlackSpace[i][j];
+					}
+				}
+			}
+
+			//entries still at 0 are invalid, make them infinity
+			for (int i = 0; i < words.length; i++) {
+				for (int j = 0; j < words.length; j++) {
+					if (optimalSlackSpace[i][j] < 0) {
+						optimalSlackSpace[i][j] = 1000000;
+					}
+				}
+			}
+
+			return optimalSlackSpace;
+		}
+	}
+
+
+
+9. public static void getRandomTextFromFile(String[] dictionary, int numWords) {
+
+		// generate i = numWords random numbers from 0 to sizeOf(dictionary)
+		Random generator = new Random();
+
+		ArrayList<Integer> randomIndices = new ArrayList<Integer>();
+
+		for (int i = 0; i < numWords; i++) {
+			randomIndices.add(generator.nextInt(dictionary.length));
 		}
 
-		for (int r = prevInd; r < args.length; r++) {
-			System.out.print(args[r]);
-			System.out.print(' ');
+		List<String> randomWords = new ArrayList<String>();
+
+		for (int index : randomIndices) {
+			randomWords.add(dictionary[index]);
 		}
+
+		String[] wordsArray = randomWords.toArray(new String[randomWords.size()]);
+
+		Integer[][] slackTable = DynamicProgramming.minSlackSpaceDP(wordsArray, 40);
+
+		SolutionExtractor.printPretty(wordsArray, slackTable);
 
 	}
-}
-
-
-9. public class RandomText {
-
-	static StringBuilder sb = new StringBuilder();
-	static Random random = new Random();
-
-	public static String ConstructText(int n, List String) {
-
-		for (int i = 0; i < String.size(); i ++) {
-			Object c = String.get(random.nextInt(String.size()));
-			sb.append(c);
-		}
-		String output = sb.toString();
-		return output;
-	}
-}

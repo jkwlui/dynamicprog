@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Memoized {
-	
+	static long startTime = System.nanoTime();
 	// For array index i, it holds the optimal solution as computed
 	// up to i words. Base case: optimalSlackSpace[0] = 0 where
 	// 0 words are included
@@ -45,6 +45,8 @@ public class Memoized {
 			
 			optimalSlackSpace[i] = min;
 		}
+		long endTime = System.nanoTime();
+		System.out.println("Memoization takes: "+ (endTime-startTime) + " milliseconds.");
 		return optimalSlackSpace[words.length];
 	}
 	

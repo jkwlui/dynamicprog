@@ -6,17 +6,20 @@ public class Main {
 		// get words from file:
 		String[] words3 = Utilities.getWordsFromFile("words.txt");
 		String[] mobydick = Utilities.getWordsFromFile("mobydick.txt");
+		String[] TenWords = Utilities.getWordsFromFile("10words.txt");
+		String[] TwentyWords = Utilities.getWordsFromFile("20words.txt");
+		String[] ThirtyWords = Utilities.getWordsFromFile("30words.txt");
+		String[] FourtyWords = Utilities.getWordsFromFile("40words.txt");
+		String[] FiftyWords = Utilities.getWordsFromFile("50words.txt");
 		
 		int maxCharInLine = 38;
 		
-//		int naiveOptimalSquaredSlackSpaces = Naive.minSlackSpace(words3, maxCharInLine);
-		// Naive version takes too long to compute Moby Dick
+		int naiveOptimalSquaredSlackSpaces = Naive.minSlackSpace(ThirtyWords, maxCharInLine);
+		// Naive version takes too long to compute Moby Dick, and anything past 30 words
 		
-		int memoizedOptimalSquaredSlackSpaces = Memoized.minSlackSpaceMemoized(mobydick, maxCharInLine);
+	//	int memoizedOptimalSquaredSlackSpaces = Memoized.minSlackSpaceMemoized(FiftyWords, maxCharInLine);
 		
-		System.out.println("Cost of optimal solution (memoized): " + memoizedOptimalSquaredSlackSpaces);
-		
-		Integer[][] dynamicProgrammingSlackTable = DynamicProgramming.minSlackSpaceDP(mobydick, maxCharInLine);
+	//	Integer[][] dynamicProgrammingSlackTable = DynamicProgramming.minSlackSpaceDP(FiftyWords, maxCharInLine);
 /*		// printing slack table
 		for (int i = 0; i < mobydick.length; i++) {
 			for (int j = 0; j < mobydick.length; j++) {
@@ -32,13 +35,15 @@ public class Main {
 		}
 		
 */		
-		int dynamicProgrammingOptimalCost = SolutionExtractor.printPretty(mobydick, dynamicProgrammingSlackTable);
+	//	int dynamicProgrammingOptimalCost = SolutionExtractor.printPretty(FiftyWords, dynamicProgrammingSlackTable);
 		
-		System.out.println("Cost of optimal solution (dynamic programming): " + dynamicProgrammingOptimalCost);
+	//	System.out.println("Cost of optimal solution (Dynamic Programming): " + dynamicProgrammingOptimalCost);
+	//	System.out.println("Cost of optimal solution (Memoized): " + memoizedOptimalSquaredSlackSpaces);
+		System.out.println("Cost of optimal solution (Naive): " + naiveOptimalSquaredSlackSpaces);
 		
-		String[] dictionary = Utilities.getWordsFromFile("american.txt");
+	//	String[] dictionary = Utilities.getWordsFromFile("american.txt");
 		
-		Utilities.getRandomTextFromFile(dictionary, 50);
+	//	Utilities.getRandomTextFromFile(dictionary, 50);
 		
 
 		

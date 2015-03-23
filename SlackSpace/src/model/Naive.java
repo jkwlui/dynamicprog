@@ -3,7 +3,7 @@ package model;
 import java.util.Arrays;
 
 public class Naive {
-
+	static long startTime = System.nanoTime();
 	public static int minSlackSpace(String[] words, int maxCharInLine) {
 		long startTime = System.nanoTime();
 		// base case: if words is empty, slack space = 0

@@ -1,9 +1,7 @@
 package model;
 
-import java.util.Arrays;
-
 public class DynamicProgramming {
-
+static long startTime = System.nanoTime();
 	// For array index i, it holds the optimal solution as computed
 		// up to i words. Base case: optimalSlackSpace[0] = 0 where
 		// 0 words are included
@@ -66,7 +64,8 @@ public class DynamicProgramming {
 					}
 				}
 			}
-			
+			long endTime = System.nanoTime();
+			System.out.println("Dynamic Programming takes: "+ (endTime-startTime) + " milliseconds.");
 			return optimalSlackSpace;
 		}
 	}
