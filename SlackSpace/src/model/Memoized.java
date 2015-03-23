@@ -12,7 +12,7 @@ public class Memoized {
 	public static Integer[] optimalSlackSpace;
 
 	public static int minSlackSpaceMemoized(String[] words, int maxCharInLine) {
-		long startTime = System.nanoTime();
+
 		// initialize array of optimal solution to the size of words
 		// use Integer object instead of primitive int because
 		// it allows for "null" values
@@ -45,8 +45,6 @@ public class Memoized {
 			
 			optimalSlackSpace[i] = min;
 		}
-		long endTime = System.nanoTime();
-		System.out.println("Memoized took " + (endTime - startTime) + " milliseconds");
 		return optimalSlackSpace[words.length];
 	}
 	

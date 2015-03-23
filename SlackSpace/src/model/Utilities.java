@@ -2,6 +2,7 @@ package model;
 
 
 import java.util.List;
+import java.util.Random;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -47,6 +48,31 @@ public class Utilities {
 			e.printStackTrace();
 		}
 		return lines.toArray(new String[lines.size()]);
+	}
+	
+	public static void getRandomTextFromFile(String[] dictionary, int numWords) {
+		
+		// generate i = numWords random numbers from 0 to sizeOf(dictionary)
+		Random generator = new Random();
+		
+		ArrayList<Integer> randomIndices = new ArrayList<Integer>();
+		
+		for (int i = 0; i < numWords; i++) {
+			randomIndices.add(generator.nextInt(dictionary.length));
+		}
+
+		List<String> randomWords = new ArrayList<String>();
+		
+		for (int index : randomIndices) {
+			randomWords.add(dictionary[index]);
+		}
+		
+		String[] wordsArray = randomWords.toArray(new String[randomWords.size()]);
+		
+		Integer[][] slackTable = DynamicProgramming.minSlackSpaceDP(wordsArray, 40);
+		
+		SolutionExtractor.printPretty(wordsArray, slackTable);
+		
 	}
 	
 

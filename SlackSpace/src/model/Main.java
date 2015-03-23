@@ -36,6 +36,12 @@ public class Main {
 		
 		System.out.println("Cost of optimal solution (dynamic programming): " + dynamicProgrammingOptimalCost);
 		
+		String[] dictionary = Utilities.getWordsFromFile("american.txt");
+		
+		Utilities.getRandomTextFromFile(dictionary, 50);
+		
+
+		
 		
 	}
 
