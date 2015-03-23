@@ -3,6 +3,7 @@ public class Main {
 
 	
 	public static void main(String[] args) {
+		long startTime = System.nanoTime();
 		// get words from file:
 		String[] words3 = Utilities.getWordsFromFile("words.txt");
 		//String[] mobydick = Utilities.getWordsFromFile("mobydick.txt");
@@ -18,6 +19,7 @@ public class Main {
 		System.out.println(solution);
 		System.out.println(solution2);
 		System.out.println(solution3);
+		System.out.println(Memoized.GetBreaks());
 		
 		String textOutput = SolutionExtractor.ToText(words3, solution2);
 		System.out.println(textOutput);

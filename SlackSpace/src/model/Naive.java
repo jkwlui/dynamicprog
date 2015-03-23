@@ -40,7 +40,4 @@ public class Naive {
 
 		return min;
 	}
-	
-	
-
 }

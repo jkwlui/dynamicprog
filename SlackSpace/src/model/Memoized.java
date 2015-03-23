@@ -1,5 +1,6 @@
 package model;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Memoized {
@@ -9,6 +10,7 @@ public class Memoized {
 	// 0 words are included
 	
 	public static Integer[] optimalSlackSpace;
+	public static ArrayList Breaks;
 
 	public static int minSlackSpaceMemoized(String[] words, int maxCharInLine) {
 		// initialize array of optimal solution to the size of words
@@ -19,6 +21,8 @@ public class Memoized {
 		optimalSlackSpace = new Integer[words.length + 1];
 		// base case: optimal slack space of 0 words = 0
 		optimalSlackSpace[0] = 0;
+		//saves word on which each line breaks
+		Breaks = new ArrayList(words.length+1);
 		
 		// populate optimalSlackSpace from i = 1..n
 		for (int i = 1; i <= words.length; i++) {
@@ -31,7 +35,7 @@ public class Memoized {
 				int charsInLine = Utilities.charsInLine(wordsInLine);
 				
 				if (charsInLine > maxCharInLine)
-					break;
+					Breaks.add(i);
 				
 				int slackSpace = (int) (Math.pow(maxCharInLine - charsInLine, 2))
 						+ optimalSlackSpace[j];
@@ -44,7 +48,10 @@ public class Memoized {
 			optimalSlackSpace[i] = min;
 		}
 		
-		
 		return optimalSlackSpace[words.length];
+	}
+	
+	public static ArrayList GetBreaks() {
+		return Breaks;
 	}
 }
