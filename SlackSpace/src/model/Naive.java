@@ -5,6 +5,7 @@ import java.util.Arrays;
 public class Naive {
 
 	public static int minSlackSpace(String[] words, int maxCharInLine) {
+		long startTime = System.nanoTime();
 		// base case: if words is empty, slack space = 0
 		int numWords = words.length;
 		if (numWords == 0)
@@ -37,7 +38,8 @@ public class Naive {
 				min = slackSpace;
 			}
 		}
-
+		long endTime = System.nanoTime();
+		System.out.println("Naive took " + (endTime - startTime) + " milliseconds");
 		return min;
 	}
 }

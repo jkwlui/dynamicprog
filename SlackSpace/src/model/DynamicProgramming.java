@@ -11,6 +11,7 @@ public class DynamicProgramming {
 		public static Integer[] optimalSlackSpace;
 
 		public static int minSlackSpaceDP(String[] words, int maxCharInLine) {
+			long startTime = System.nanoTime();
 			// initialize array of optimal solution to the size of words
 			// use Integer object instead of primitive int because
 			// it allows for "null" values
@@ -40,11 +41,11 @@ public class DynamicProgramming {
 						min = slackSpace;
 					
 				}
-				
 				optimalSlackSpace[i] = min;
 			}
 			
-			
+			long endTime = System.nanoTime();
+			System.out.println("Dynamic Programming took " + (endTime - startTime) + " milliseconds");
 			return optimalSlackSpace[words.length];
 		}
 	}

@@ -3,7 +3,6 @@ public class Main {
 
 	
 	public static void main(String[] args) {
-		long startTime = System.nanoTime();
 		// get words from file:
 		String[] words3 = Utilities.getWordsFromFile("words.txt");
 		//String[] mobydick = Utilities.getWordsFromFile("mobydick.txt");
