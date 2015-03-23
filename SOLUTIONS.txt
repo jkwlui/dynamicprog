@@ -39,7 +39,7 @@ I thought I would sail about a little
 and see the watery part of the world."
 
 Max line length: 30
-Sum of squares of slack space: 15^2+14^2+1^2+7^2+16^2+7^2+6^2 =
+Sum of squares of slack space: 15^2+14^2+1^2+7^2+16^2+7^2+6^2 = 225+196+1+49+256+49+36 = 812
 
 "Call me Ishmael. Some years ago, never
 mind how long precisely, having little
@@ -48,7 +48,7 @@ particular to interest me on shore, I
 thought I would sail about a little
 and see the watery part of the world."
 
-Sum of squares of slack space:
+Sum of squares of slack space: 7^2+7^2+6^2+6^2+5^2+6^2 = 49+49+36+36+25+36 = 231
 
 CONSTRAINTS: If there is one word in the text, and the word
 is longer than the maximum length allowed, than it would have
@@ -168,8 +168,67 @@ We will need to store OPT(0), .. , OPT(n), so the memory use is Θ(n).
 	}
 }
 
-7.
+7. public class DynamicProgramming {
+
+	// For array index i, it holds the optimal solution as computed
+		// up to i words. Base case: optimalSlackSpace[0] = 0 where
+		// 0 words are included
+
+		public static Integer[] optimalSlackSpace;
+
+		public static int minSlackSpaceDP(String[] words, int maxCharInLine) {
+			// initialize array of optimal solution to the size of words
+			// use Integer object instead of primitive int because
+			// it allows for "null" values
+
+			// initialize array indices 0..n where n is the number of words
+			optimalSlackSpace = new Integer[words.length + 1];
+			// base case: optimal slack space of 0 words = 0
+			optimalSlackSpace[0] = 0;
+
+			// populate optimalSlackSpace from i = 1..n
+			for (int i = 1; i <= words.length; i++) {
+				// initialize min slack space to maximum value of Integer (infty)
+				int min = Integer.MAX_VALUE;
+				// add 1 word to word on this line and find slack spaces:
+				for (int j = i - 1; j >= 0; j--) {
+					String[] wordsInLine = Arrays.copyOfRange(words, j, i);
+
+					int charsInLine = Utilities.charsInLine(wordsInLine);
+
+					if (charsInLine > maxCharInLine)
+						break;
+
+					int slackSpace = (int) (Math.pow(maxCharInLine - charsInLine, 2))
+							+ optimalSlackSpace[j];
+
+					if (slackSpace < min)
+						min = slackSpace;
+
+				}
+
+				optimalSlackSpace[i] = min;
+			}
+
+
+			return optimalSlackSpace[words.length];
+		}
+	}
 
 8.
 
-9.
+9. public class RandomText {
+
+	static StringBuilder sb = new StringBuilder();
+	static Random random = new Random();
+
+	public static String ConstructText(int n, List String) {
+
+		for (int i = 0; i < String.size(); i ++) {
+			Object c = String.get(random.nextInt(String.size()));
+			sb.append(c);
+		}
+		String output = sb.toString();
+		return output;
+	}
+}
