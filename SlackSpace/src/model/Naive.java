@@ -9,8 +9,8 @@ public class Naive {
 		int numWords = words.length;
 		if (numWords == 0)
 			return 0;
-		// initialize min to 1 larger than number of characters for all words
-		int min = 100000000;
+		// initialize min to MAX_VALUE of integer
+		int min = Integer.MAX_VALUE;
 		int j = numWords;
 		while (true) {
 			j--;
@@ -30,7 +30,7 @@ public class Naive {
 			
 			// recursively find the total slack space given that current line
 			// consists of words used in this line
-			int slackSpace = (int) (Math.pow(maxCharInLine - charsInLine, 2) + minSlackSpace(remainingWords, maxCharInLine));
+			int slackSpace = (int) (Math.pow(maxCharInLine - charsInLine, 2)) + minSlackSpace(remainingWords, maxCharInLine);
 			// update the minimum slack space if slack space from this line
 			// is smaller than the minimum
 			if (slackSpace < min) {
