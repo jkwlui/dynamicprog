@@ -3,10 +3,11 @@
 ""
 Sum of squares of slack space: 0
 
-"The cat in the hat."
-"The cat in the hat."
+"The"
+"The"
 
-Sum of squares of slack space:
+Max line length: 3
+Sum of squares of slack space: 0
 
 Small cases:
 "This little piggy went to market.
@@ -15,15 +16,18 @@ This little piggy had roast beef.
 This little piggy had none.
 And this little piggy cried wee wee wee all the way home."
 
-Sum of squares of slack space:
+Max line length: 30
+Sum of squares of slack space: 2^2+1^2+2^2+4^2+26^2 = 4+1+4+16+676 = 701
 
 "This little piggy went to market.
-This little piggy stayed home. This
-little piggy had roast beef. This
-little piggy had none. And this little
-piggy cried wee wee wee all the way home."
+This little piggy stayed home.
+This little piggy had roast beef.
+This little piggy had none. And
+this little piggy cried wee wee
+wee all the way home."
 
-Sum of squares of slack space:
+Max line length: 30
+Sum of squares of slack space: 2^2+1^2+2^2+0^2+1^2+10^2 =  4+1+4+0+1+100 = 110
 
 Substantial case:
 "Call me Ishmael.
@@ -34,7 +38,8 @@ and nothing particular to interest me on shore,
 I thought I would sail about a little
 and see the watery part of the world."
 
-Sum of squares of slack space:
+Max line length: 30
+Sum of squares of slack space: 15^2+14^2+1^2+7^2+16^2+7^2+6^2 =
 
 "Call me Ishmael. Some years ago, never
 mind how long precisely, having little
@@ -44,6 +49,10 @@ thought I would sail about a little
 and see the watery part of the world."
 
 Sum of squares of slack space:
+
+CONSTRAINTS: If there is one word in the text, and the word
+is longer than the maximum length allowed, than it would have
+to be rejected.
 
 2. Mathematical recurrence for cost of sum of
 squared slacks in optimal solution:
@@ -77,25 +86,87 @@ the total time would be Θ(n^2) time.
 
 We will need to store OPT(0), .. , OPT(n), so the memory use is Θ(n).
 
-
 4. Java
 
-5. L = max(line.length);
+5. public class Naive {
 
-FindMinSlack(Text){
+	public static int minSlackSpace(String[] words, int maxCharInLine) {
+		// base case: if words is empty, slack space = 0
+		int numWords = words.length;
+		if (numWords == 0)
+			return 0;
+		// initialize min to 1 larger than number of characters for all words
+		int min = 100000000;
+		int j = numWords;
+		while (true) {
+			j--;
+			if (j < 0)
+				break;
+			// partition words list into words to be considered in this line
+			String[] wordsInLine = (String[]) Arrays.copyOfRange(words, j, numWords);
+			// get num. of characters for this line
+			int charsInLine = Utilities.charsInLine(wordsInLine);
+			// partition words list into words to be considered in next line
+			String[] remainingWords = (String[]) Arrays.copyOfRange(words, 0, j);
 
-SquaresOfSlacksOfAllLines = []
+			// if current line characters exceeds the maximum allowed for a line
+			// break out of loop and produce the minimum value
+			if (charsInLine > maxCharInLine)
+				break;
 
-  for every word in Text {
-    if sum(characters in word + 1) <= L {
-      LeftHandSide =
-      RightHandSide =
-      slack= LeftHandSide - RightHandSide
-      }
-    min(sum of squares of slacks of all lines)
-    }
+			// recursively find the total slack space given that current line
+			// consists of words used in this line
+			int slackSpace = (int) (Math.pow(maxCharInLine - charsInLine, 2) + minSlackSpace(remainingWords, maxCharInLine));
+			// update the minimum slack space if slack space from this line
+			// is smaller than the minimum
+			if (slackSpace < min) {
+				min = slackSpace;
+			}
+		}
 
-6.
+		return min;
+	}
+
+}
+
+6. public static int minSlackSpaceMemoized(String[] words, int maxCharInLine) {
+		// initialize array of optimal solution to the size of words
+		// use Integer object instead of primitive int because
+		// it allows for "null" values
+
+		// initialize array indices 0..n where n is the number of words
+		optimalSlackSpace = new Integer[words.length + 1];
+		// base case: optimal slack space of 0 words = 0
+		optimalSlackSpace[0] = 0;
+
+		// populate optimalSlackSpace from i = 1..n
+		for (int i = 1; i <= words.length; i++) {
+			// initialize min slack space to maximum value of Integer (infty)
+			int min = Integer.MAX_VALUE;
+			// add 1 word to word on this line and find slack spaces:
+			for (int j = i - 1; j >= 0; j--) {
+				String[] wordsInLine = Arrays.copyOfRange(words, j, i);
+
+				int charsInLine = Utilities.charsInLine(wordsInLine);
+
+				if (charsInLine > maxCharInLine)
+					break;
+
+				int slackSpace = (int) (Math.pow(maxCharInLine - charsInLine, 2))
+						+ optimalSlackSpace[j];
+
+				if (slackSpace < min)
+					min = slackSpace;
+
+			}
+
+			optimalSlackSpace[i] = min;
+		}
+
+
+		return optimalSlackSpace[words.length];
+	}
+}
 
 7.
 

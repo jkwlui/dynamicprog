@@ -17,11 +17,11 @@ public class Naive {
 			if (j < 0)
 				break;
 			// partition words list into words to be considered in this line
-			String[] wordsInLine = Arrays.copyOfRange(words, j, numWords);
+			String[] wordsInLine = (String[]) Arrays.copyOfRange(words, j, numWords);
 			// get num. of characters for this line
 			int charsInLine = Utilities.charsInLine(wordsInLine);
 			// partition words list into words to be considered in next line
-			String[] remainingWords = Arrays.copyOfRange(words, 0, j);
+			String[] remainingWords = (String[]) Arrays.copyOfRange(words, 0, j);
 			
 			// if current line characters exceeds the maximum allowed for a line
 			// break out of loop and produce the minimum value

@@ -10,7 +10,7 @@ public class Memoized {
 	
 	public static Integer[] optimalSlackSpace;
 
-	public static int minSlackSpace(String[] words, int maxCharInLine) {
+	public static int minSlackSpaceMemoized(String[] words, int maxCharInLine) {
 		// initialize array of optimal solution to the size of words
 		// use Integer object instead of primitive int because
 		// it allows for "null" values
@@ -47,5 +47,4 @@ public class Memoized {
 		
 		return optimalSlackSpace[words.length];
 	}
-	
 }
