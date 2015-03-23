@@ -4,73 +4,67 @@ import java.util.Vector;
 
 public class SolutionExtractor {
 	
-	public static void ToText(String[] args, Integer[][] solution3) {
+	public static int printPretty(String[] words, Integer[][] slackTable) {
 		
-		int numWords = args.length;
-		int[] Cost = new int[args.length+1];
+		// like Memoized version: initialize array of costs for 
+		// the slack space of including the first x words
+		int[] optimalSlackSpace = new int[words.length + 1];
 		
-		int breaks[] = new int[args.length];
+		// initialize array of the indices of the last words on each line
+		int[] lastWords = new int[words.length];
 		
-		Cost[0] = 0;
-		for (int i = 0; i < numWords; i++) {
-			Cost[i+1] = Integer.MAX_VALUE; //infinity
+		// base case: 0 slack space for 0 words to pretty print
+		optimalSlackSpace[0] = 0;
+		
+		for (int i = 0; i < words.length; i++) {
+			optimalSlackSpace[i + 1] = 1000000;
+
 			int k = i;
 			
-			/*
-			 * cost of arranging k words in the text + 
-			 * slack of words from kth word to ith word on a single line
-			 */
-			int T = Cost[k] + solution3[k][i];
+			int current = optimalSlackSpace[k] + slackTable[k][i];
 			
-			if (T < Cost[i+1]) {
-				//if cost of arranging k words in the text + 
-				//slack of words from kth word to ith word on a single line 
-				//smaller than previous costs
-				
-				Cost[i+1] = T;
-				breaks[i] = k;
+			if (current < optimalSlackSpace[i + 1]) {
+				optimalSlackSpace[i + 1] = current;
+				lastWords[i] = k;
 			}
-			while (k >= 1 && T < Integer.MAX_VALUE) {
-				//find min k such that cost of arranging k words + 
-				//slack from kth word to ith word decreases 
+			
+			while (k >= 1 && current < 1000000) {
 				k--;
-				T = Cost[k] + solution3[k][i];
-				if (T < Cost[i+1]) {
-					Cost[i+1] = T;
-					breaks[i] = k;
+				current = optimalSlackSpace[k] + slackTable[k][i];
+				if (current < optimalSlackSpace[i+1]) {
+					optimalSlackSpace[i+1] = current;
+					lastWords[i] = k;
 				}
 			}
+			
+		}
+		// use a Vector to in order to prepend indices  
+		Vector<Integer> newLineIndex = new Vector<Integer>(); 
+		// starting from the last line:
+		newLineIndex.add(0, lastWords[words.length - 1]);
+		int i = lastWords[words.length - 1] - 1;
+		for (; i >= 0; i = lastWords[i] - 1) {
+			newLineIndex.add(0, lastWords[i]);
 		}
 		
-		//determine the first word on each line
+		int wordPointer = 0;
 		
-		//initilize list of indices of first word on each line
-		Vector<Integer> firstWordInd = new Vector<Integer>();
-		//add first word index of last line if all words used
-		firstWordInd.add(0, breaks[numWords- 1]);
-		int i = breaks[numWords- 1] - 1;
-		while (i >= 0) {
-			//backtrack to find first word on lines
-			firstWordInd.add(0, breaks[i]);
-			i = breaks[i] - 1;
-		}
-		
-		int prevInd = 0;
-		for (int firstInd : firstWordInd) {
-			//firstInd = firstWordInd.elementAt(i);
-			//print words from prevInd to firstind -1 in a single line
-			for (int j = prevInd; j < firstInd; j++) {
-				System.out.print(args[j]);
-				System.out.print(' ');
+		for (int firstWord : newLineIndex) {
+			for (int k = wordPointer; k < firstWord; k++) {
+				System.out.print(words[k] + ' ');
 			}
 			System.out.println();
-			prevInd = firstInd;
+			wordPointer = firstWord;
 		}
 		
-		for (int r = prevInd; r < args.length; r++) {
-			System.out.print(args[r]);
-			System.out.print(' ');
+		// last line:
+		for (int j = wordPointer; j < words.length; j++) {
+			System.out.print(words[j] + " ");
+		
 		}
+		System.out.println();
+		
+		return optimalSlackSpace[words.length];
 		
 	}
 }

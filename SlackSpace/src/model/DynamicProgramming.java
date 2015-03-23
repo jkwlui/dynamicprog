@@ -17,18 +17,21 @@ public class DynamicProgramming {
 			// it allows for "null" values
 			
 			// initialize array indices [] [] with number of words
-			optimalSlackSpace = new Integer[words.length + 1][words.length + 1];
+			optimalSlackSpace = new Integer[words.length][words.length];
 			for (int i = 0; i < words.length; i++) {
 				for (int j = 0; j < words.length; j ++) {
-					optimalSlackSpace[i][j] = Integer.MAX_VALUE; //will equal infinity
+					optimalSlackSpace[i][j] = -1; //will equal infinity
 				}
 			}
-			// base case: optimal slack space of 0 words = 0
-			optimalSlackSpace[0][0] = 0;
+			// base case
+			optimalSlackSpace[0][0] = words[0].length();
+			
+			int[] lastWord = new int[words.length];
+			lastWord[0] = words.length - 1;
 			
 			//first row of table
 			for (int i = 1; i < words.length; i++) {
-				optimalSlackSpace[0][i] = optimalSlackSpace[0][i-1] + i;
+				optimalSlackSpace[0][i] = optimalSlackSpace[0][i-1] + words[i].length();
 			}
 			
 			//remaining rows
@@ -41,14 +44,15 @@ public class DynamicProgramming {
 					k++;
 					optimalSlackSpace[i][k] = optimalSlackSpace[0][k] - optimalSlackSpace[0][i-1];
 				}
+				lastWord[i] = k;
 			}
 			
 			//Finding the sum of squares for valid entries in table
 			for (int i = 0; i < words.length; i++) {
-				for (int j = i; j <= words.length; j++) {
+				for (int j = i; j <= lastWord[i]; j++) {
 					optimalSlackSpace[i][j] = maxCharInLine - optimalSlackSpace[i][j] - (j-i);
 					if (optimalSlackSpace[i][j] < 0) {
-						optimalSlackSpace[i][j] = Integer.MAX_VALUE; //Infinity
+						optimalSlackSpace[i][j] = 1000000; //Infinity
 					} else {
 						optimalSlackSpace[i][j] = optimalSlackSpace[i][j] * optimalSlackSpace[i][j];
 					}
@@ -59,7 +63,7 @@ public class DynamicProgramming {
 			for (int i = 0; i < words.length; i++) {
 				for (int j = 0; j < words.length; j++) {
 					if (optimalSlackSpace[i][j] < 0) {
-						optimalSlackSpace[i][j] = Integer.MAX_VALUE;
+						optimalSlackSpace[i][j] = 1000000;
 					}
 				}
 			}

@@ -22,6 +22,14 @@ public class Utilities {
 		return numChars;
 	}
 	
+	public static int[] getWordLens(String[] words) {
+		int[] wordLens = new int[words.length];
+		for (int i = 0; i < words.length; i++) {
+			wordLens[i] = words[i].length();
+		}
+		return wordLens;
+	}
+	
 	public static String[] getWordsFromFile(String filename) {
 		List<String> lines = new ArrayList<String>();
 		try {
